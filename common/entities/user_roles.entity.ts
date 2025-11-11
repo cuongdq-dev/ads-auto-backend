@@ -1,3 +1,4 @@
+// user_roles.entity.ts
 import { Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from './base';
 import { Role } from './role.entity';

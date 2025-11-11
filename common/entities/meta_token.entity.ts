@@ -1,19 +1,33 @@
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+// meta_token.entity.ts
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  Relation,
+} from 'typeorm';
+import { AdAccount } from './ad_account.entity';
 import { BaseEntity } from './base';
+import { TokenRefreshLog } from './token_refresh_log.entity';
+import { User } from './user.entity';
+import { UserAdAccount } from './user_ad_account.entity';
 
 @Entity({ name: 'meta_tokens' })
 export class MetaToken extends BaseEntity {
-  // Who uploaded / owns this token in your system
   @Column({ type: 'uuid', nullable: true })
   @Index()
   owner_user_id: string;
 
-  @ManyToOne('AdAccount', { nullable: true })
-  @Column({ type: 'uuid', nullable: true })
-  @Index()
-  ad_account_id: string;
+  @ManyToOne(() => User, (u) => u.owned_tokens, { nullable: true })
+  @JoinColumn({ name: 'owner_user_id' })
+  owner_user?: Relation<User>;
 
-  // Encrypted token - AES-GCM style
+  @ManyToOne(() => AdAccount, (aa) => aa.meta_tokens, { nullable: true })
+  @JoinColumn({ name: 'ad_account_id' })
+  ad_account?: Relation<AdAccount>;
+
   @Column({ type: 'text' })
   token_ciphertext: string;
 
@@ -23,11 +37,9 @@ export class MetaToken extends BaseEntity {
   @Column({ type: 'varchar', length: 128 })
   token_tag: string;
 
-  // fingerprint for quick lookup (sha256 hex)
   @Column({ type: 'varchar', length: 128, nullable: true })
   token_fingerprint?: string;
 
-  // refresh token encrypted (optional)
   @Column({ type: 'text', nullable: true })
   refresh_token_ciphertext?: string;
 
@@ -48,4 +60,10 @@ export class MetaToken extends BaseEntity {
 
   @Column({ type: 'timestamptz', nullable: true })
   last_used_at?: Date;
+
+  @OneToMany(() => TokenRefreshLog, (log) => log.meta_token)
+  refresh_logs?: Relation<TokenRefreshLog[]>;
+
+  @OneToMany(() => UserAdAccount, (uaa) => uaa.meta_token)
+  assigned_user_accounts?: Relation<UserAdAccount[]>;
 }

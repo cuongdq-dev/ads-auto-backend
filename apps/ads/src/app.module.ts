@@ -27,4 +27,4 @@ export const global_modules = [
 @Module({
   imports: [...global_modules, ...modules],
 })
-export class BuddyModule {}
+export class AdsModule {}

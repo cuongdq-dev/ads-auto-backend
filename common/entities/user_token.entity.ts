@@ -1,3 +1,4 @@
+// user_token.entity.ts
 import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 import {
   BeforeInsert,

@@ -1,3 +1,4 @@
+// user_ad_account.entity.ts
 import {
   Column,
   Entity,
@@ -6,10 +7,10 @@ import {
   ManyToOne,
   Relation,
 } from 'typeorm';
-import type { AdAccount } from './ad_account.entity';
+import { AdAccount } from './ad_account.entity';
 import { BaseEntity } from './base';
-import type { MetaToken } from './meta_token.entity';
-import type { User } from './user.entity';
+import { MetaToken } from './meta_token.entity';
+import { User } from './user.entity';
 
 @Entity({ name: 'user_ad_accounts' })
 export class UserAdAccount extends BaseEntity {
@@ -17,7 +18,7 @@ export class UserAdAccount extends BaseEntity {
   @Index()
   user_id: string;
 
-  @ManyToOne('User', 'user_ad_accounts', { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (u) => u.user_ad_accounts, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: Relation<User>;
 
@@ -25,15 +26,18 @@ export class UserAdAccount extends BaseEntity {
   @Index()
   ad_account_id: string;
 
-  @ManyToOne('AdAccount', 'user_ad_accounts', { onDelete: 'CASCADE' })
+  @ManyToOne(() => AdAccount, (aa) => aa.user_ad_accounts, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'ad_account_id' })
   ad_account: Relation<AdAccount>;
 
-  // assigned token id (nullable)
   @Column({ type: 'uuid', nullable: true })
   meta_token_id?: string;
 
-  @ManyToOne('MetaToken', { nullable: true })
+  @ManyToOne(() => MetaToken, (mt) => mt.assigned_user_accounts, {
+    nullable: true,
+  })
   @JoinColumn({ name: 'meta_token_id' })
   meta_token?: Relation<MetaToken>;
 
@@ -42,4 +46,7 @@ export class UserAdAccount extends BaseEntity {
 
   @Column({ type: 'boolean', default: true })
   is_active: boolean;
+
+  @Column({ type: 'uuid', nullable: true })
+  assigned_by_admin_id?: string;
 }

@@ -1,5 +1,7 @@
-import { Column, Entity, Index } from 'typeorm';
+// notifications.entity.ts
+import { Column, Entity, Index, ManyToOne, Relation } from 'typeorm';
 import { BaseEntity } from './base';
+import { User } from './user.entity';
 
 @Entity({ name: 'notifications' })
 export class Notification extends BaseEntity {
@@ -9,6 +11,9 @@ export class Notification extends BaseEntity {
   @Column({ type: 'uuid', nullable: true })
   @Index()
   recipient_user_id?: string;
+
+  @ManyToOne(() => User, { nullable: true })
+  recipient_user?: Relation<User>;
 
   @Column({ type: 'jsonb', nullable: true })
   payload?: any;

@@ -1,3 +1,4 @@
+// user.entity.ts
 import { ValidationGroup } from '@app/crud/validation-group';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import * as bcrypt from 'bcryptjs';
@@ -13,7 +14,10 @@ import {
   Relation,
   Unique,
 } from 'typeorm';
+import { AdminAuditLog } from './admin_audit_log.entity';
 import { BaseEntity } from './base';
+import { MetaToken } from './meta_token.entity';
+import { UserAdAccount } from './user_ad_account.entity';
 import { UserRole } from './user_roles.entity';
 import type { Session } from './user_session.entity';
 import { Token } from './user_token.entity';
@@ -80,6 +84,15 @@ export class User extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   @ApiHideProperty()
   meta_token: string;
+
+  @OneToMany(() => UserAdAccount, (uaa) => uaa.user)
+  user_ad_accounts?: Relation<UserAdAccount[]>;
+
+  @OneToMany(() => MetaToken, (mt) => mt.owner_user)
+  owned_tokens?: Relation<MetaToken[]>;
+
+  @OneToMany(() => AdminAuditLog, (log) => log.admin_user)
+  admin_logs?: Relation<AdminAuditLog[]>;
 
   @BeforeInsert()
   @BeforeUpdate()

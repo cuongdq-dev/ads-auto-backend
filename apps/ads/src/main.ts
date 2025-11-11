@@ -5,22 +5,22 @@ import {
   createApplication,
   documentationBuilder,
 } from '../../../common/utils/src/bootstrap';
-import { BuddyModule } from './app.module';
+import { AdsModule } from './app.module';
 
 async function bootstrap() {
   // Admin Module Setup
-  const app = await NestFactory.create(BuddyModule);
+  const app = await NestFactory.create(AdsModule);
   app.use(express.json({ limit: '50mb' })); // For JSON payloads
   app.use(express.urlencoded({ limit: '50mb', extended: true })); // For URL-encoded payloads
 
   createApplication(app);
-  const buddyConfigService = app.get(ConfigService);
+  const appConfigService = app.get(ConfigService);
   documentationBuilder(
     app,
-    buddyConfigService,
-    buddyConfigService.get('ADS_APP_NAME'),
+    appConfigService,
+    appConfigService.get('ADS_APP_NAME'),
   );
-  const port = buddyConfigService.get('ADS_PORT') || 3007;
+  const port = appConfigService.get('ADS_PORT') || 3007;
   await app.listen(port);
 
   console.log('===== Application run:' + port + '=====');

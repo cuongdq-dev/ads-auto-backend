@@ -1,3 +1,4 @@
+// role.entity.ts
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from './base';
 import { UserRole } from './user_roles.entity';
@@ -7,6 +8,7 @@ export enum CodeConstants {
   EDITOR_CODE = 'api-editor',
   AUTHOR_CODE = 'api-author',
 }
+
 @Entity('roles')
 export class Role extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')

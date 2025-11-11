@@ -1,3 +1,4 @@
+// user_session.entity.ts
 import {
   Column,
   Entity,
