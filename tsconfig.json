@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2021",
+    "sourceMap": false,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/config": ["common/config"],
+      "@app/config/*": ["common/config/*"],
+
+      "@app/crud": ["common/crud/src"],
+      "@app/crud/*": ["common/crud/src/*"],
+
+      "@app/decorators": ["common/decorators/src"],
+      "@app/decorators/*": ["common/decorators/src/*"],
+
+      "@app/entities": ["common/entities"],
+      "@app/entities/*": ["common/entities/*"],
+
+      "@app/guard": ["common/guard"],
+      "@app/guard/*": ["common/guard/*"],
+
+      "@app/modules": ["common/modules/src"],
+      "@app/modules/*": ["common/modules/src/*"],
+
+      "@app/pagination": ["common/pagination/src"],
+      "@app/pagination/*": ["common/pagination/src/*"],
+
+      "@app/pipes": ["common/pipes/src"],
+      "@app/pipes/*": ["common/pipes/src/*"],
+
+      "@app/utils": ["common/utils/src"],
+      "@app/utils/*": ["common/utils/src/*"]
+    }
+  },
+  "include": ["apps/**/*", "common/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
